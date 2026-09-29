@@ -1,0 +1,49 @@
+# ============================================================
+# compose.yaml — запускает 2 контейнера: базу MongoDB и сайт
+# Запуск:     docker compose up --build
+# Остановка:  docker compose down
+# ============================================================
+
+services: # список контейнеров
+  # ---------- Контейнер 1: база данных ----------
+  mongo: # имя сервиса. Внутри Docker это же и адрес базы (хост "mongo")
+    image: mongo:8 # готовый образ MongoDB 8 с Docker Hub (скачается сам)
+
+    ports:
+      - "27017:27017" # "порт_на_компьютере:порт_в_контейнере"
+        # нужно, чтобы Compass и npm run seed:admin могли подключиться
+
+    environment: # настройки при первом запуске базы
+      MONGO_INITDB_ROOT_USERNAME: root # логин главного пользователя базы
+      MONGO_INITDB_ROOT_PASSWORD: example # его пароль
+
+    volumes:
+      - mongo_data:/data/db # данные базы хранятся в томе mongo_data
+        # без этого все формы пропадут при удалении контейнера
+
+    healthcheck: # проверка "база уже готова?"
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping')"] # команда проверки
+      interval: 10s # проверять каждые 10 секунд
+      timeout: 5s # ждать ответа максимум 5 секунд
+      retries: 5 # после 5 неудач подряд считать базу сломанной
+
+  # ---------- Контейнер 2: ваш сайт (Next.js) ----------
+  app:
+    build: . # собрать образ по Dockerfile из текущей папки
+
+    ports:
+      - "3000:3000" # сайт будет открываться на http://localhost:3000
+
+    environment: # переменные для приложения (как .env.local, но для Docker)
+      MONGODB_URI: mongodb://root:example@mongo:27017/form_builder?authSource=admin
+      #            ^логин ^пароль  ^хост = имя сервиса выше   ^база   ^root живёт в базе admin
+      SESSION_SECRET: 9M/IoyafeOOBOPTyPS/SinutRrJleNUNfhjcM6WLgYs=
+      # сгенерировать: node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
+
+    depends_on: # от кого зависит этот контейнер
+      mongo:
+        condition: service_healthy # запускать сайт только когда healthcheck базы прошёл
+
+# ---------- Хранилища данных ----------
+volumes:
+  mongo_data: # объявляем том mongo_data (он используется у mongo выше)

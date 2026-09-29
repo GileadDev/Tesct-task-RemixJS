@@ -15,10 +15,13 @@
   "dependencies": {
     "@base-ui/react": "^1.8.0",
     "@hookform/resolvers": "^5.9.1",
+    "@langchain/core": "^1.2.13",
+    "@langchain/openai": "^1.6.0",
     "bcryptjs": "^3.0.3",
     "class-variance-authority": "^0.7.1",
     "cn": "^0.4.0",
     "jose": "^6.2.12",
+    "langchain": "^1.5.14",
     "lucide-react": "^1.48.0",
     "mongoose": "^9.10.2",
     "next": "16.3.6",
