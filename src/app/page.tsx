@@ -1,8 +1,4 @@
-import { Button } from "@/components/ui/button";
-export default function Page() {
-  return (
-    <main>
-      <Button>Проверка кнопки</Button>
-    </main>
-  );
+// Временная заглушка. Настоящая главная страница появится на этапе 10.
+export default function HomePage() {
+  return <main className="p-8">Form Builder</main>;
 }
