@@ -22,6 +22,7 @@ import {
 } from "@/lib/forms/schema";
 import { cn } from "@/lib/utils";
 import { FieldSettings } from "./field-settings";
+import { AiChat } from "./ai-chat";
 
 type Props = {
   // Нет initialForm — создаём новую форму, есть — редактируем
@@ -273,6 +274,7 @@ export function FormEditor({ initialForm }: Props) {
             Кликните по полю в превью, чтобы открыть его настройки.
           </p>
         )}
+        <AiChat fields={form.fields} onFieldsChange={setFields} />
       </aside>
     </div>
   );
