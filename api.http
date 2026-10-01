@@ -1,0 +1,19 @@
+@baseUrl = http://localhost:3000
+
+### Вход
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{ "email": "admin@example.com", "password": "{{$dotenv ADMIN_PASSWORD}}" }
+
+### Список форм
+GET {{baseUrl}}/api/forms
+
+### Ошибка валидации: пустое название
+POST {{baseUrl}}/api/forms
+Content-Type: application/json
+
+{ "title": "", "description": "", "published": true, "fields": [] }
+
+### Выход
+POST {{baseUrl}}/api/auth/logout
