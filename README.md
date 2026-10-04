@@ -2,6 +2,8 @@
 
 A form builder built with Next.js. An admin creates forms in a visual editor (live preview + field settings sidebar, optional AI assistant), and visitors fill out published forms on the public site.
 
+**Live demo:** https://tesct-task-remix-js.vercel.app (admin credentials are provided separately)
+
 ## Features
 
 **Admin panel** (`/admin`, protected by JWT authentication)
@@ -128,6 +130,15 @@ node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
 
 The credentials and `SESSION_SECRET` in `compose.yaml` are for local use only. The AI assistant is disabled in Docker unless you add `OPENAI_API_KEY` to the `app` service environment.
 
+## Deployment
+
+The live demo runs on Vercel with MongoDB Atlas.
+
+1. Import the GitHub repository in Vercel. The Next.js preset is detected automatically.
+2. Add the environment variables `MONGODB_URI` and `SESSION_SECRET` (plus `OPENAI_API_KEY` and `OPENAI_MODEL` for the AI assistant). `ADMIN_EMAIL` and `ADMIN_PASSWORD` are not needed there: run `npm run seed:admin` locally against the same database.
+3. In Atlas, allow connections from Vercel: Network Access → add `0.0.0.0/0`, because Vercel uses dynamic IP addresses.
+4. Every push to `main` triggers a new production deployment.
+
 ## Scripts
 
 | Command                | Description                               |
@@ -155,7 +166,7 @@ All `/api/forms` and `/api/ai` endpoints require the session cookie set by `/api
 | `DELETE` | `/api/forms/:id`   | Delete a form                            | `204`                       |
 | `POST`   | `/api/ai`          | `{ message, fields }` → updated fields   | `200` + `{ reply, fields }` |
 
-Errors use one format: `{ "error": "message", "issues": [{ "path": "title", "message": "..." }] }`, with status `400` (validation), `401` (not signed in), `404` (form not found).
+Errors use one format, `{ "error": "message" }`, with status `400` (validation), `401` (not signed in) or `404` (form not found). Validation errors also include the failed fields: `"issues": [{ "path": "title", "message": "..." }]`.
 
 Example request body for `POST /api/forms`:
 
