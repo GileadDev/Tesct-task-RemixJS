@@ -57,7 +57,7 @@ export function LoginForm() {
     <Card className="w-full max-w-sm">
       <CardHeader>
         <CardTitle>Вход в админку</CardTitle>
-        <CardDescription>Email и пароль из .env.local</CardDescription>
+        <CardDescription>Введите email и пароль администратора</CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit(onSubmit)} noValidate>

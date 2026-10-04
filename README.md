@@ -41,7 +41,20 @@ A form builder built with Next.js. An admin creates forms in a visual editor (li
 | Package manager | npm                                                                              |
 | Bundler         | Turbopack, the default bundler of Next.js 16 (`next build --webpack` also works) |
 | Environment     | Docker Compose (app + MongoDB)                                                   |
-| AI (bonus)      | LangChain.js (`@langchain/openai`) with structured output                        |
+| Documentation   | README.md                                                                        |
+| Version control | Git + GitHub                                                                     |
+| AI (bonus)      | LangChain.js (`@langchain/openai`) + OpenAI API, structured output               |
+
+Also used:
+
+| Tool               | Purpose                                                      |
+| ------------------ | ------------------------------------------------------------ |
+| Node.js 24         | Runtime                                                      |
+| Next.js `proxy.ts` | Redirects unauthenticated requests from `/admin` to `/login` |
+| lucide-react       | Icons                                                        |
+| tsx                | Runs the TypeScript seed script (`npm run seed:admin`)       |
+| Vercel             | Hosting of the live demo                                     |
+| MongoDB Atlas      | Managed cloud database for development and the live demo     |
 
 ## Requirements
 
